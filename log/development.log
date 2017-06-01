@@ -1,0 +1,79 @@
+
+
+Started GET "/bfprice/load?token=%242a%2410%240D7xube8GX0QwIvg%2FiAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq&name=test&_=1496219292832" for 127.0.0.1 at 2017-05-31 16:28:13 +0800
+  [1m[36mSQL (5.6ms)[0m  [1mUSE [AIS20090714202245][0m
+Processing by BfpriceController#load as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "_"=>"1496219292832"}
+  [1m[35mSQL (5.8ms)[0m  USE [Domitory]
+  [1m[36mTUser Load (10.1ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+Completed 500 Internal Server Error in 208ms
+
+NameError (uninitialized constant BfpriceController::Bfdjprice):
+  app/controllers/bfprice_controller.rb:6:in `load'
+
+
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.6ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.2ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.9ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (44.5ms)
+
+
+Started GET "/bfprice/load?token=%242a%2410%240D7xube8GX0QwIvg%2FiAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq&name=test&_=1496219297131" for 127.0.0.1 at 2017-05-31 16:28:17 +0800
+Processing by BfpriceController#load as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "_"=>"1496219297131"}
+  [1m[35mTUser Load (9.8ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+Completed 500 Internal Server Error in 12ms
+
+NameError (uninitialized constant BfpriceController::Bfdjprice):
+  app/controllers/bfprice_controller.rb:6:in `load'
+
+
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_source.erb (1.3ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.0ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (2.1ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (71.6ms)
+
+
+Started GET "/bfprice/load?token=%242a%2410%240D7xube8GX0QwIvg%2FiAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq&name=test&_=1496219301773" for 127.0.0.1 at 2017-05-31 16:28:21 +0800
+Processing by BfpriceController#load as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "_"=>"1496219301773"}
+  [1m[36mTUser Load (12.5ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+Completed 500 Internal Server Error in 14ms
+
+NameError (uninitialized constant BfpriceController::Bfdjprice):
+  app/controllers/bfprice_controller.rb:6:in `load'
+
+
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_source.erb (0.9ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.1ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /Users/it/.rvm/gems/ruby-2.2.1/gems/actionpack-4.1.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (70.7ms)
+
+
+Started GET "/bfprice/load?token=%242a%2410%240D7xube8GX0QwIvg%2FiAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq&name=test&_=1496219715374" for 127.0.0.1 at 2017-05-31 16:35:15 +0800
+  [1m[36mSQL (7.0ms)[0m  [1mUSE [AIS20090714202245][0m
+Processing by BfpriceController#load as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "_"=>"1496219715374"}
+  [1m[35mSQL (5.9ms)[0m  USE [Domitory]
+  [1m[36mTUser Load (5.9ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mSQL (7.2ms)[0m  USE [Domitory]
+  [1m[36mBfdjprice Load (10.1ms)[0m  [1mEXEC sp_executesql N'SELECT [bfdjprice].* FROM [bfdjprice]'[0m
+Completed 200 OK in 314ms (Views: 65.3ms | ActiveRecord: 155.7ms)
+
+
+Started POST "/reject/de" for 127.0.0.1 at 2017-05-31 16:35:22 +0800
+Processing by RejectController#de as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test"}
+  [1m[35m (9.5ms)[0m  EXEC sp_executesql N'select FItemID,FName from t_Department where FDeleted = 0 and FParentID in (504,508) '
+Completed 200 OK in 11ms (Views: 1.1ms | ActiveRecord: 9.5ms)
+
+
+Started GET "/reject/index?token=%242a%2410%240D7xube8GX0QwIvg%2FiAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq&name=test&_=1496219722199" for 127.0.0.1 at 2017-05-31 16:35:22 +0800
+Processing by RejectController#index as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "_"=>"1496219722199"}
+  [1m[36mTUser Load (12.2ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mTUser Load (8.2ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mSQL (11.9ms)[0m  [1mUSE [Domitory][0m
+  [1m[35mT_K3_Auth Load (6.4ms)[0m  EXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_reject_auth= 1)'
+  [1m[36m (1664.0ms)[0m  [1mEXEC sp_executesql N'select * from v_Rejction where 日期 > dateadd(month,-1,getdate())'[0m
+Completed 200 OK in 2907ms (Views: 1011.4ms | ActiveRecord: 1792.5ms)
