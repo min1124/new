@@ -2,7 +2,7 @@ class BfpriceController < ApplicationController
 	before_action :authentication, only:[:load ]
 	def load
 		name = params[:name];
-		if "test"==name
+		if "李永青"==name
 			@a = Bfdjprice.all;
 			render :json =>{:data =>@a}
 		else

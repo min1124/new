@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'icmo/review' => 'icmo#review'
   post 'icmo/sub' => 'icmo#sub'
 
+  
   get 'reject/index' => 'reject#index'
   post 'reject/zzd' => 'reject#zzd'
   post 'reject/rejection' => 'reject#Rejection'
@@ -88,6 +89,7 @@ Rails.application.routes.draw do
   post 'arrival/delete' => 'arrivalrate#delete'
 
   post 'fnumber/index' => 'fnumber#index'
+  post 'fnumber/save' => 'fnumber#save'
 
 
   post 'cancel/index' => 'cancelgoods#index'
