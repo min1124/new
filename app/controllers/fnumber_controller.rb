@@ -32,7 +32,7 @@ class FnumberController < ApplicationController
         	custFnumber.product_status = productStatus
         	custFnumber.shipping_or_not = shippingOrNot
         	custFnumber.update_date = updateDate
-        	custFnumber.f11 = f11
+        	custFnumber.F11 = f11
         	if custFnumber.save!
             	render :text => "保存成功";
         	else 

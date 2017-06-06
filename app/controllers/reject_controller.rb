@@ -109,26 +109,31 @@ class RejectController < ApplicationController
             if ""!=cpdm 
                 if bfsl>0
                     bfjetotal = getBfdj(bflb,bfsl,cpdm);
-                    sqlInsert3 = "insert into t_RejCheckFlu(FRejBillNo,RejAmount) values('"+djbh+"','"+bfjetotal.to_s+"')";
-
-                    a = inputs.length/6
-                    if bmbz==@user.dept&&power(T_Reject_Auth, "create_auth")
-                        ActiveRecord::Base.transaction do
-                            for i in 0..a-1
-                                sql = " select '"+djbh+"','"+inputs[0+i*6]+"',
-                                    '"+inputs[1+i*6]+"','"+inputs[2+i*6]+"','"+inputs[3+i*6]+"','"+inputs[4+i*6]+"',
-                                    '"+inputs[5+i*6]+"' union all";
-                                sqlInsert2 += sql;    
-                            end
-                            if sql
-                                conn.insert(sqlInsert2[0,sqlInsert2.length-9]); 
-                                conn.insert(sqlInsert1);
-                                conn.insert(sqlInsert3);                
-                            end
-                        end
-                        render :text =>"保存成功"
+                    if "false_more" == bfjetotal
+                        render :text =>"产品代码#{cpdm}存在多个报废单价，请核实！"
+                    elsif "false_nil" == bfjetotal
+                        render :text =>"产品代码#{cpdm}的报废单价未维护！"
                     else
-                        render :text =>"保存失败"
+                        sqlInsert3 = "insert into t_RejCheckFlu(FRejBillNo,RejAmount) values('"+djbh+"','"+bfjetotal.to_s+"')";
+                        a = inputs.length/6
+                        if bmbz==@user.dept&&power(T_Reject_Auth, "create_auth")
+                            ActiveRecord::Base.transaction do
+                                for i in 0..a-1
+                                    sql = " select '"+djbh+"','"+inputs[0+i*6]+"',
+                                        '"+inputs[1+i*6]+"','"+inputs[2+i*6]+"','"+inputs[3+i*6]+"','"+inputs[4+i*6]+"',
+                                        '"+inputs[5+i*6]+"' union all";
+                                    sqlInsert2 += sql;    
+                                end
+                                if sql
+                                    conn.insert(sqlInsert2[0,sqlInsert2.length-9]); 
+                                    conn.insert(sqlInsert1);
+                                    conn.insert(sqlInsert3);                
+                                end
+                            end
+                            render :text =>"保存成功"
+                        else
+                            render :text =>"保存失败"
+                        end
                     end
                 end
             else
@@ -155,11 +160,21 @@ class RejectController < ApplicationController
                             break;
                         else 
                             bfsl = inputs[2+i*6].to_f;
-                            bfjetotal += getBfdj(bflb,bfsl,wldm);
-                            sql = " select '"+djbh+"','"+inputs[0+i*6]+"',
-                            '"+inputs[1+i*6]+"','"+inputs[2+i*6]+"','"+inputs[3+i*6]+"','"+inputs[4+i*6]+"',
-                            '"+inputs[5+i*6]+"' union all";
-                            sqlInsert2 += sql; 
+                            if "false_more" == getBfdj(bflb,bfsl,wldm)
+                                render :text =>"物料代码#{wldm}存在多个报废单价，请核实！"
+                                flag = false;
+                                break;
+                            elsif "false_nil" == getBfdj(bflb,bfsl,wldm)
+                                render :text =>"物料代码#{wldm}的报废单价未维护！"
+                                flag = false;
+                                break;
+                            else
+                                bfjetotal += getBfdj(bflb,bfsl,wldm);
+                                sql = " select '"+djbh+"','"+inputs[0+i*6]+"',
+                                    '"+inputs[1+i*6]+"','"+inputs[2+i*6]+"','"+inputs[3+i*6]+"','"+inputs[4+i*6]+"',
+                                    '"+inputs[5+i*6]+"' union all";
+                                sqlInsert2 += sql; 
+                            end
                         end
                     else
                         render :text =>"物料代码为空！"
@@ -185,9 +200,6 @@ class RejectController < ApplicationController
 	end
 
     def getBfdj(bflb,bfsl,dm)
-        puts "bflb=#{bflb}";
-        puts "bfsl=#{bfsl}";
-        puts "dm=#{dm}";
         @a = Bfdjprice.new
         @a = Bfdjprice.find_by_sql("select * from bfdjprice where FEntryNumber = '"+dm+"' and FRejClass = '"+bflb+"'")
         if nil != @a && @a.length > 0
@@ -195,10 +207,10 @@ class RejectController < ApplicationController
                 bfdj = @a[0].RejAmountDJ
                 return bfdj*bfsl
             else
-                render :text => "存在多个报废单价，请核实！"
+                return "false_more"
             end
         else 
-            render :text =>"报废单价未维护！"
+            return "false_nil"
         end
     end
 
