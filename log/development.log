@@ -252,3 +252,36 @@ Processing by RejectController#Rejection as */*
   [1m[36mBfdjprice Load (3.9ms)[0m  [1mEXEC sp_executesql N'select * from bfdjprice where FEntryNumber = ''7i'' and FRejClass = ''原材料报废'''[0m
   Rendered text template (0.0ms)
 Completed 200 OK in 146ms (Views: 0.4ms | ActiveRecord: 57.0ms)
+
+
+Started POST "/icmo/index" for 127.0.0.1 at 2017-06-15 08:48:46 +0800
+  [1m[36mSQL (1.3ms)[0m  [1mUSE [AIS20090714202245][0m
+Processing by IcmoController#index as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "type"=>"icmo"}
+  [1m[35mSQL (1.9ms)[0m  USE [Domitory]
+  [1m[36mTUser Load (1.9ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mTUser Load (2.4ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mSQL (1.9ms)[0m  [1mUSE [Domitory][0m
+  [1m[35mT_K3_Auth Load (1.9ms)[0m  EXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_icmo_auth= 1)'
+  [1m[36m (247.5ms)[0m  [1mEXEC sp_executesql N'select 制造单号,产品代码,生产车间,制造数量,SN号,产品名称,产品要求,制单人,包装要求,批号,工程师,品质工程师,日期,计划开工日期,计划完工日期,配料时间 from v_PPBomList where 日期>dateadd(month,-1,getdate())'[0m
+Completed 200 OK in 858ms (Views: 385.7ms | ActiveRecord: 317.5ms)
+
+
+Started POST "/icmo/ppbom_main" for 127.0.0.1 at 2017-06-15 08:48:50 +0800
+Processing by IcmoController#PPBom_Main as HTML
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "type"=>"icmo", "sql"=>"MB1720092"}
+  [1m[35mTUser Load (2.4ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mTUser Load (2.9ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mT_K3_Auth Load (3.0ms)[0m  EXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_icmo_auth= 1)'
+  [1m[36m (3.9ms)[0m  [1mEXEC sp_executesql N'exec PPBom_Main''MB1720092'''[0m
+Completed 200 OK in 16ms (Views: 0.6ms | ActiveRecord: 12.2ms)
+
+
+Started POST "/icmo/ppbom_entry" for 127.0.0.1 at 2017-06-15 08:48:50 +0800
+Processing by IcmoController#PPBom_Entry as HTML
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "type"=>"icmo", "sql"=>"MB1720092"}
+  [1m[35mTUser Load (1.8ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mTUser Load (2.9ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mT_K3_Auth Load (1.8ms)[0m  EXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_icmo_auth= 1)'
+  [1m[36m (5.2ms)[0m  [1mEXEC sp_executesql N'exec PPBom_Entry''MB1720092'''[0m
+Completed 200 OK in 17ms (Views: 2.1ms | ActiveRecord: 11.6ms)
