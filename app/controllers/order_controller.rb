@@ -127,6 +127,7 @@ class OrderController < ApplicationController
 										when "B"
 											order.business_mode = '普通销售'
 										end
+										
 									else
 									end
 									order.save!
@@ -148,6 +149,17 @@ class OrderController < ApplicationController
 							else
 								order = Order.new
 								order.business_mode = "Normal"#订类型
+								# fhVmi = row[row1.index("项目类别")]#项目类别
+								# if fhVmi
+								# 	case fhVmi
+								# 	when '标准'
+								# 		order.business_mode = '普通销售'
+								# 	when "寄售"
+								# 		order.business_mode = 'VMI补货'
+								# 	end
+								# else
+								# end
+
 								order.po_number = row[row1.index("采购凭证")].to_s.split('.')[0]#客户订单编号
 								order.po_line_num = row[row1.index("项目")].to_s.split('.')[0]#客户订单行号
 								order.supplier_item = row[row1.index("短文本")].split('/')[0]#对应型号
@@ -521,6 +533,7 @@ class OrderController < ApplicationController
 				jhrq_1 = params[:jhrq_1]
 				cnjhrq_1 = params[:cnjhrq_1]
 				for i in 0..cpdm_1.length-1	
+					dyxh_1 = conn.select_value("select FMapName from ICItemMapping where FMapNumber = '"+dydm_1[i]+"' and FCompanyID ="+ghdw.to_s)
 					@vmientry = Vmientry.new #vmi 从表
 					@vmientry.FID = finterid
 					@vmientry.FText = dydm_1[i]
@@ -528,6 +541,7 @@ class OrderController < ApplicationController
 					@vmientry.FDecimal = sl_1[i]
 					@vmientry.FDecimal7 = sl_1[i]
 					@vmientry.FText3 = ddhh_1[i]
+					@vmientry.FText1 = dyxh_1
 					#@vmientry.FText4 #评审订单号
 					@vmientry.FDate3 =  Date.parse jhrq_1[i]
 					@vmientry.FDate4 = Date.parse cnjhrq_1[i]

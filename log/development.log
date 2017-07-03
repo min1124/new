@@ -285,3 +285,23 @@ Processing by IcmoController#PPBom_Entry as HTML
   [1m[35mT_K3_Auth Load (1.8ms)[0m  EXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_icmo_auth= 1)'
   [1m[36m (5.2ms)[0m  [1mEXEC sp_executesql N'exec PPBom_Entry''MB1720092'''[0m
 Completed 200 OK in 17ms (Views: 2.1ms | ActiveRecord: 11.6ms)
+
+
+Started POST "/reject/de" for 127.0.0.1 at 2017-06-27 16:15:01 +0800
+  [1m[36mSQL (3.8ms)[0m  [1mUSE [AIS20170606101633][0m
+Processing by RejectController#de as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test"}
+  [1m[35m (160.5ms)[0m  EXEC sp_executesql N'select FItemID,FName from t_Department where FDeleted = 0 and FParentID in (504,508) '
+Completed 200 OK in 163ms (Views: 1.2ms | ActiveRecord: 160.5ms)
+
+
+Started GET "/reject/index?token=%242a%2410%240D7xube8GX0QwIvg%2FiAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq&name=test&_=1498551301372" for 127.0.0.1 at 2017-06-27 16:15:02 +0800
+Processing by RejectController#index as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "_"=>"1498551301372"}
+  [1m[36mSQL (6.3ms)[0m  [1mUSE [K3][0m
+  [1m[35mTUser Load (6.2ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mTUser Load (4.2ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mSQL (3.3ms)[0m  USE [K3]
+  [1m[36mT_K3_Auth Load (4.2ms)[0m  [1mEXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_reject_auth= 1)'[0m
+  [1m[35m (2391.8ms)[0m  EXEC sp_executesql N'select * from v_Rejction where 日期 > dateadd(month,-1,getdate())'
+Completed 200 OK in 3105ms (Views: 263.5ms | ActiveRecord: 2558.9ms)
