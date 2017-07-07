@@ -148,17 +148,17 @@ class OrderController < ApplicationController
 								
 							else
 								order = Order.new
-								order.business_mode = "Normal"#订类型
-								# fhVmi = row[row1.index("项目类别")]#项目类别
-								# if fhVmi
-								# 	case fhVmi
-								# 	when '标准'
-								# 		order.business_mode = '普通销售'
-								# 	when "寄售"
-								# 		order.business_mode = 'VMI补货'
-								# 	end
-								# else
-								# end
+								# order.business_mode = "Normal"#订类型
+								fhVmi = row[row1.index("项目类别")]#项目类别
+								if fhVmi
+									case fhVmi
+									when '标准'
+										order.business_mode = '普通销售'
+									when "寄售"
+										order.business_mode = 'VMI补货'
+									end
+								else
+								end
 
 								order.po_number = row[row1.index("采购凭证")].to_s.split('.')[0]#客户订单编号
 								order.po_line_num = row[row1.index("项目")].to_s.split('.')[0]#客户订单行号
