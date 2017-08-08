@@ -5,25 +5,37 @@ class OrderController < ApplicationController
 		if power(T_K3_Auth, "t_order_auth")
 			starttime=params[:starttime]
 	    	endtime=params[:endtime]
+	    	ddztsel=params[:ddztsel]
 			type = params[:type]
+
+			sqlDdzt = "";
+			if ddztsel&&(""!=ddztsel)
+                case ddztsel
+                    when "未执行完订单"
+                        sqlDdzt += " and (flag is null and qty <> 0)";
+                    when "己执行完订单"
+                        sqlDdzt += " and (flag = '1' or qty = 0)";
+                end
+            end
+
 			if type == 'zx'||type == 'zxhub'
-				@order = Order.find_by_sql("select * from V_ZX where order_type = '"+type+"'")
-				render :json => {:data =>@order}
+				if endtime&&starttime&&(""!=endtime)&&(""!=starttime)
+					@order = Order.find_by_sql("select * from V_ZX where order_type ='"+type+"' and date>'"+starttime+"' and date<'"+endtime+"'" + sqlDdzt)
+					render :json => {:data =>@order}
+				else
+					@order = Order.find_by_sql("select * from V_ZX where order_type ='"+type+"'" + sqlDdzt)
+					render :json => {:data =>@order}
+				end
 			else
 				if type == 'other'
 					@order = Order.find_by_sql("select * from V_ZX where order_type ='other'")
 					render :json => {:data =>@order}
 				else
-					if endtime&&starttime
-						if endtime==""||starttime==""
-							@order = Order.find_by_sql("select * from V_Order where order_type ='"+type+"'")#.paginate(page:params[:page],per_page:10)
-							render :json => {:data =>@order}
-						else
-							@order = Order.find_by_sql("select * from V_Order where order_type ='"+type+"' and date>'"+starttime+"' and date<'"+endtime+"'")#.paginate(page:params[:page],per_page:10)
-							render :json => {:data =>@order}
-						end
+					if endtime&&starttime&&(""!=endtime)&&(""!=starttime)
+						@order = Order.find_by_sql("select * from V_Order where order_type ='"+type+"' and date>'"+starttime+"' and date<'"+endtime+"'" + sqlDdzt)
+						render :json => {:data =>@order}
 					else
-						@order = Order.find_by_sql("select * from V_Order where order_type ='"+type+"'")#.paginate(page:params[:page],per_page:10)
+						@order = Order.find_by_sql("select * from V_Order where order_type ='"+type+"'" + sqlDdzt)
 						render :json => {:data =>@order}
 					end
 				end
@@ -95,13 +107,28 @@ class OrderController < ApplicationController
 							if row[0]=="需方代表"
 								
 							else
-								order_e = Order.where("po_number = ? AND customer_item = ? ",row[row1.index("合同编号")],row[row1.index("物料代码")])
+								zxhub =  Zxhub.where("model = ? and fnumber = ? ",row[row1.index("规格型号")],row[row1.index("物料代码")])
+								if zxhub[0]
+									case zxhub[0].address
+										when 'VMI'
+											business_mode = 'VMI补货'
+										when "BHUB"
+											business_mode = 'HUB补货'
+										when "B"
+											business_mode = '普通销售'
+									end
+								else
+								end
+								order_e = Order.where("po_number = ? AND customer_item = ? AND business_mode = ? 
+									AND supplier_item = ? ",row[row1.index("合同编号")],row[row1.index("物料代码")],
+									business_mode,row[row1.index("规格型号")])
 								if order_e[0]
 									order_e[0].qty_request = order_e[0].qty_request + row[row1.index("订购数量")]
 									if row[row1.index("交货日期")].to_s> order_e[0].request_date.to_s
 										order_e[0].request_date=row[row1.index("交货日期")]
 									else
 									end
+									order_e[0].business_mode = business_mode
 									order_e[0].save!
 								else
 									order = Order.new
@@ -117,24 +144,14 @@ class OrderController < ApplicationController
 									order.order_type = 'zx'
 									order.date = time
 									#order.business_mode = '普通销售'
-									zxhub =  Zxhub.where("model = ? and fnumber = ? ",order.supplier_item,order.customer_item)
-									if zxhub[0]
-										case zxhub[0].address
-										when 'VMI'
-											order.business_mode = 'VMI补货'
-										when "BHUB"
-											order.business_mode = 'HUB补货'
-										when "B"
-											order.business_mode = '普通销售'
-										end
-										
-									else
-									end
+									order.business_mode = business_mode
+									
 									order.save!
 								end
 							end
 						end
 					end
+					File.delete("public/"+tmp.original_filename)
 					render :text => '上传成功'
 				else
 					File.delete("public/"+tmp.original_filename)
@@ -148,7 +165,7 @@ class OrderController < ApplicationController
 								
 							else
 								order = Order.new
-								# order.business_mode = "Normal"#订类型
+								#order.business_mode = "Normal"#订类型
 								fhVmi = row[row1.index("项目类别")]#项目类别
 								if fhVmi
 									case fhVmi
@@ -260,15 +277,13 @@ class OrderController < ApplicationController
 								unit_price = row[row1.index("合同单价")]#单价
 								order_e = Order.where("supplier_item = ? and customer_item = ? and unit_price = ? and order_type = ?",supplier_item,customer_item,unit_price, 'zxhub')
 								
-								if order_e[0]&&row[row1.index("入库日期")].to_s[0,7]==order_e[0].request_date.to_s[0,7]
+								if order_e[0]
 									order_e[0].qty_request = order_e[0].qty_request + row[row1.index("实收数量")]
-									# if row[row1.index("入库日期")].to_s == order_e[0].request_date.to_s
-										
-									# else
-									# end
-									# puts order_e[0].request_date.to_s[0,6]
-									order_e[0].save
-									
+									if row[row1.index("入库日期")].to_s > order_e[0].request_date.to_s
+										order_e[0].request_date = row[row1.index("入库日期")]
+									else
+									end
+									order_e[0].save									
 								else
 									order = Order.new
 									zxhub =  Zxhub.where("model = ? and fnumber = ? ",supplier_item,customer_item)

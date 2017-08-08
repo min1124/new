@@ -7,6 +7,7 @@ class RejectController < ApplicationController
             djzt = params[:djzt]
             bfjecx = params[:bfjecx]
             bflbcx = params[:bflbcx]
+            bfbmcx = params[:bfbmcx]
             sqlDjzt = "";
             if djzt&&(""!=djzt)
                 case djzt
@@ -54,6 +55,19 @@ class RejectController < ApplicationController
                         sqlDjzt += " and 报废类别 = '成品报废'";
                     when "原材料报废"
                         sqlDjzt += " and 报废类别 = '原材料报废'";
+                end
+            end
+
+            if bfbmcx&&(""!=bfbmcx)
+                case bfbmcx
+                    when "模块"
+                        sqlDjzt += " and 部门 like '模块%'";
+                    when "器件"
+                        sqlDjzt += " and 部门 like '器件%'";
+                    when "TO"
+                        sqlDjzt += " and 部门 like 'TO%'";
+                    when "管芯"
+                        sqlDjzt += " and 部门 like '管芯%'";
                 end
             end
             
@@ -110,7 +124,7 @@ class RejectController < ApplicationController
             if !zzsl||""==zzsl
                 zzsl = 0;
             end
-            if zzsl < rksl
+            if zzsl.to_f < rksl.to_f
                 render :text =>"制造数量小于入库数量！"
             else 
                 bfsl = zzsl.to_f - rksl.to_f;
