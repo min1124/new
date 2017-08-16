@@ -72,10 +72,12 @@ class RejectController < ApplicationController
             end
             
     		if endtime&&starttime&&(""!=endtime)&&(""!=starttime)
-    			@a=ActiveRecord::Base.connection.select_all("select * from v_Rejction where 日期 >= '"+starttime+"' and 日期 <='"+endtime+"'" + sqlDjzt)
+    			@a=ActiveRecord::Base.connection.select_all("select * from v_Rejction 
+                    where 日期 >= '"+starttime+"' and 日期 <='"+endtime+"'" + sqlDjzt)
     			render :json =>{:data =>@a}
     		else
-    			@a=ActiveRecord::Base.connection.select_all("select * from v_Rejction where 日期 > dateadd(month,-1,getdate())" + sqlDjzt)
+    			@a=ActiveRecord::Base.connection.select_all("select * from v_Rejction 
+                    where 日期 > dateadd(month,-1,getdate())" + sqlDjzt)
     			render :json =>{:data =>@a}
     		end
         else
@@ -256,7 +258,8 @@ class RejectController < ApplicationController
 	    render :text => @b 
     end
     def de
-    	@b = ActiveRecord::Base.connection.select_all("select FItemID,FName from t_Department where FDeleted = 0 and FParentID in (504,508) ")
+    	@b = ActiveRecord::Base.connection.select_all("select FItemID,FName 
+            from t_Department where FDeleted = 0 and FParentID in (504,508) ")
 		render :json =>{:data =>@b}
     end
     def sh
@@ -294,9 +297,9 @@ class RejectController < ApplicationController
                 case dept
                     when "管芯生产部"
                         meSh(@user.name, params[:note], djbh, "me_gx_auth")
-                    when "器件生产一部"
+                    when "器件生产部"
                         meSh(@user.name, params[:note], djbh, "me_qj_auth")
-                    when "模块生产一部"
+                    when "模块生产部"
                         meSh(@user.name, params[:note], djbh, "me_mk_auth")
                     when "TO生产部"
                         meSh(@user.name, params[:note], djbh, "me_to_auth")
@@ -309,9 +312,9 @@ class RejectController < ApplicationController
                 case dept
                     when "管芯生产部"
                         pzSh(@user.name, params[:note], djbh, "pz_gx_auth")
-                    when "器件生产一部"
+                    when "器件生产部"
                         pzSh(@user.name, params[:note], djbh, "pz_qj_auth")
-                    when "模块生产一部"
+                    when "模块生产部"
                         pzSh(@user.name, params[:note], djbh, "pz_mk_auth")
                     when "TO生产部"
                         pzSh(@user.name, params[:note], djbh, "pz_to_auth")
@@ -380,9 +383,9 @@ class RejectController < ApplicationController
                 case dept
                     when "管芯生产部"
                         functionGb(djbh, "me_gx_auth")
-                    when "器件生产一部"
+                    when "器件生产部"
                         functionGb(djbh, "me_qj_auth")
-                    when "模块生产一部"
+                    when "模块生产部"
                         functionGb(djbh, "me_mk_auth")
                     when "TO生产部"
                         functionGb(djbh, "me_to_auth")
@@ -395,9 +398,9 @@ class RejectController < ApplicationController
                 case dept
                     when "管芯生产部"
                         functionGb(djbh, "pz_gx_auth")
-                    when "器件生产一部"
+                    when "器件生产部"
                         functionGb(djbh, "pz_qj_auth")
-                    when "模块生产一部"
+                    when "模块生产部"
                         functionGb(djbh, "pz_mk_auth")
                     when "TO生产部"
                         functionGb(djbh, "pz_to_auth")

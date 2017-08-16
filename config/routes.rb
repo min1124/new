@@ -109,6 +109,11 @@ Rails.application.routes.draw do
   post 'fbillnoclosed/save' => 'fbillnoclosed#save'
 
   get 'seoutstock/load' => 'seoutstock#index'
+  post 'seoutstock/getCk' => 'seoutstock#getCk'
+
+  post 'deliveryorder/index' => 'deliveryorder#test_excel'
+  post 'deliveryorder/ckdhChange' => 'deliveryorder#ckdhChange'
+  
 
   post 'cancel/index' => 'cancelgoods#index'
   post 'cancel/fbillno' => 'cancelgoods#fbillno'
