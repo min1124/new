@@ -3196,3 +3196,167 @@ Processing by FnumberController#productLine as */*
   [1m[36mTUser Load (0.9ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
   [1m[35m (1.4ms)[0m  EXEC sp_executesql N'select finterid as 内码, FId, Fname from t_submessage where FParentID=504'
 Completed 200 OK in 4ms (Views: 0.6ms | ActiveRecord: 2.3ms)
+
+
+Started POST "/deliveryorder/ckdhChange" for 127.0.0.1 at 2017-08-18 16:21:09 +0800
+  [1m[36mSQL (0.6ms)[0m  [1mUSE [AIS20090714202245][0m
+Processing by DeliveryorderController#ckdhChange as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "ckdh"=>"X1707120"}
+  [1m[35mSQL (0.5ms)[0m  USE [Domitory]
+  [1m[36mFbillno_Closed Load (14.0ms)[0m  [1mEXEC sp_executesql N'select t1.FBillNo 出库单号,t1.FHeadSelfB0166 as 合同号,
+                    t2.FEntrySelfB0170 as 行号,t2.FMapNumber as 物料号,t2.FMapName as 物料描述,
+                    t2.FQty as 总数量,t1.FHeadSelfB0162 as 备注
+                    from srv_lnk.AIS20090714202245.dbo.ICStockBill t1 
+                    left join srv_lnk.AIS20090714202245.dbo.ICStockBillEntry t2 on t1.FInterID = t2.FInterID
+                    where t1.FBillNo = ''X1707120'''[0m
+Completed 200 OK in 86ms (Views: 2.0ms | ActiveRecord: 29.0ms)
+
+
+Started POST "/deliveryorder/ckdhChange" for 127.0.0.1 at 2017-08-18 16:21:16 +0800
+Processing by DeliveryorderController#ckdhChange as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "ckdh"=>"X1707120"}
+  [1m[35mFbillno_Closed Load (4.4ms)[0m  EXEC sp_executesql N'select t1.FBillNo 出库单号,t1.FHeadSelfB0166 as 合同号,
+                    t2.FEntrySelfB0170 as 行号,t2.FMapNumber as 物料号,t2.FMapName as 物料描述,
+                    t2.FQty as 总数量,t1.FHeadSelfB0162 as 备注
+                    from srv_lnk.AIS20090714202245.dbo.ICStockBill t1 
+                    left join srv_lnk.AIS20090714202245.dbo.ICStockBillEntry t2 on t1.FInterID = t2.FInterID
+                    where t1.FBillNo = ''X1707120'''
+Completed 200 OK in 7ms (Views: 0.9ms | ActiveRecord: 4.4ms)
+
+
+Started POST "/deliveryorder/ckdhChange" for 127.0.0.1 at 2017-08-18 16:21:20 +0800
+Processing by DeliveryorderController#ckdhChange as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "ckdh"=>"X1707126"}
+  [1m[36mFbillno_Closed Load (212.7ms)[0m  [1mEXEC sp_executesql N'select t1.FBillNo 出库单号,t1.FHeadSelfB0166 as 合同号,
+                    t2.FEntrySelfB0170 as 行号,t2.FMapNumber as 物料号,t2.FMapName as 物料描述,
+                    t2.FQty as 总数量,t1.FHeadSelfB0162 as 备注
+                    from srv_lnk.AIS20090714202245.dbo.ICStockBill t1 
+                    left join srv_lnk.AIS20090714202245.dbo.ICStockBillEntry t2 on t1.FInterID = t2.FInterID
+                    where t1.FBillNo = ''X1707126'''[0m
+Completed 200 OK in 214ms (Views: 0.3ms | ActiveRecord: 212.7ms)
+
+
+Started POST "/deliveryorder/ckdhChange" for 127.0.0.1 at 2017-08-18 16:21:38 +0800
+Processing by DeliveryorderController#ckdhChange as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "ckdh"=>"X1707126"}
+  [1m[35mFbillno_Closed Load (4.9ms)[0m  EXEC sp_executesql N'select t1.FBillNo 出库单号,t1.FHeadSelfB0166 as 合同号,
+                    t2.FEntrySelfB0170 as 行号,t2.FMapNumber as 物料号,t2.FMapName as 物料描述,
+                    t2.FQty as 总数量,t1.FHeadSelfB0162 as 备注
+                    from srv_lnk.AIS20090714202245.dbo.ICStockBill t1 
+                    left join srv_lnk.AIS20090714202245.dbo.ICStockBillEntry t2 on t1.FInterID = t2.FInterID
+                    where t1.FBillNo = ''X1707126'''
+Completed 200 OK in 6ms (Views: 0.3ms | ActiveRecord: 4.9ms)
+
+
+Started POST "/deliveryorder/index" for 127.0.0.1 at 2017-08-18 16:21:39 +0800
+Processing by DeliveryorderController#test_excel as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test", "inputsTbody"=>{"0"=>{"hth"=>"2961002394", "hh"=>"10", "wldm"=>"ORTH000540", "wlms"=>"MXPD-243S", "xh"=>"1", "xs"=>"1", "mxsl"=>"", "zsl"=>"1.0", "bz"=>"新品替换", "cpph"=>""}, "1"=>{"hth"=>"2961002419", "hh"=>"30", "wldm"=>"ORTJ000054", "wlms"=>"MTR-003CUD", "xh"=>"", "xs"=>"", "mxsl"=>"", "zsl"=>"2.0", "bz"=>"新品替换", "cpph"=>""}}, "inputsTfoot"=>{"zxs"=>"1", "hj"=>"3"}}
+  Rendered text template (0.0ms)
+Completed 200 OK in 89ms (Views: 69.6ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/fnumber/index" for 127.0.0.1 at 2017-08-18 16:22:01 +0800
+Processing by FnumberController#index as HTML
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test"}
+  [1m[36mSQL (0.6ms)[0m  [1mUSE [Domitory][0m
+  [1m[35mTUser Load (1.0ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mTUser Load (0.8ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mSQL (0.7ms)[0m  USE [Domitory]
+  [1m[36mT_K3_Auth Load (1.0ms)[0m  [1mEXEC sp_executesql N'SELECT [t_k3_auth].* FROM [t_k3_auth] WHERE (name = N''test'' and t_fnumber_auth= 1)'[0m
+  [1m[35mSQL (0.5ms)[0m  USE [Domitory]
+  [1m[36mCust_Fnumber Load (10.7ms)[0m  [1mEXEC sp_executesql N'SELECT [cust_fnumbers].* FROM [cust_fnumbers]'[0m
+Completed 200 OK in 320ms (Views: 86.6ms | ActiveRecord: 60.9ms)
+
+
+Started POST "/fnumber/getfnumber" for 127.0.0.1 at 2017-08-18 16:22:02 +0800
+Processing by FnumberController#getfnumber as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test"}
+  [1m[35mTUser Load (0.8ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36m (149.7ms)[0m  [1mEXEC sp_executesql N'select fnumber as 物料代码 from t_icitem
+                where fdeleted=0 and (fnumber like ''04.%'' or fnumber like ''05.%'') Order by fnumber'[0m
+Completed 200 OK in 361ms (Views: 208.9ms | ActiveRecord: 150.5ms)
+
+
+Started POST "/fnumber/productLine" for 127.0.0.1 at 2017-08-18 16:22:02 +0800
+Processing by FnumberController#productLine as */*
+  Parameters: {"token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "name"=>"test"}
+  [1m[35mTUser Load (0.9ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36m (2.4ms)[0m  [1mEXEC sp_executesql N'select finterid as 内码, FId, Fname from t_submessage where FParentID=504'[0m
+Completed 200 OK in 5ms (Views: 0.6ms | ActiveRecord: 3.3ms)
+
+
+Started POST "/fnumber/checkFnumber" for 127.0.0.1 at 2017-08-18 16:22:07 +0800
+Processing by FnumberController#checkFnumber as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"04.1.01.0039-W"}
+  [1m[35mCust_Fnumber Load (1.1ms)[0m  EXEC sp_executesql N'select ID from cust_fnumbers where fnumber = ''04.1.01.0039-W'''
+  Rendered text template (0.0ms)
+Completed 200 OK in 2ms (Views: 0.6ms | ActiveRecord: 1.1ms)
+
+
+Started POST "/fnumber/fnumber" for 127.0.0.1 at 2017-08-18 16:22:07 +0800
+Processing by FnumberController#fnumber as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"04.1.01.0039-W"}
+  [1m[36mTUser Load (0.9ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mSQL (0.5ms)[0m  USE [Domitory]
+  [1m[36mCust_Performance_Char Load (26.8ms)[0m  [1mEXEC sp_executesql N'select t1.f_102 AS 客户代码 ,t2.* 
+                from ( SELECT * from V_Fnumber where 物料代码 = ''04.1.01.0039-W'') t2
+                left join cust_performance_char t1 on t1.product_model_suffix = t2.f102'[0m
+  [1m[35mCust_Performance_Char Load (25.2ms)[0m  EXEC sp_executesql N'SELECT * 
+                from V_FnumberFMapName where 物料代码 = ''04.1.01.0039-W'' '
+Completed 200 OK in 86ms (Views: 1.1ms | ActiveRecord: 56.8ms)
+
+
+Started POST "/fnumber/checkFnumber" for 127.0.0.1 at 2017-08-18 16:22:20 +0800
+Processing by FnumberController#checkFnumber as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"05.1.03.1267-6"}
+  [1m[36mCust_Fnumber Load (1.2ms)[0m  [1mEXEC sp_executesql N'select ID from cust_fnumbers where fnumber = ''05.1.03.1267-6'''[0m
+  Rendered text template (0.0ms)
+Completed 200 OK in 2ms (Views: 0.5ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/fnumber/fnumber" for 127.0.0.1 at 2017-08-18 16:22:20 +0800
+Processing by FnumberController#fnumber as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"05.1.03.1267-6"}
+  [1m[35mTUser Load (0.9ms)[0m  EXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''
+  [1m[36mCust_Performance_Char Load (26.4ms)[0m  [1mEXEC sp_executesql N'select t1.f_102 AS 客户代码 ,t2.* 
+                from ( SELECT * from V_Fnumber where 物料代码 = ''05.1.03.1267-6'') t2
+                left join cust_performance_char t1 on t1.product_model_suffix = t2.f102'[0m
+  [1m[35mCust_Performance_Char Load (16.5ms)[0m  EXEC sp_executesql N'SELECT * 
+                from V_FnumberFMapName where 物料代码 = ''05.1.03.1267-6'' '
+Completed 200 OK in 59ms (Views: 2.8ms | ActiveRecord: 53.4ms)
+
+
+Started POST "/fnumber/customerCode" for 127.0.0.1 at 2017-08-18 16:22:20 +0800
+Processing by FnumberController#customerCode as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"我司标准产"}
+  [1m[36m (7.3ms)[0m  [1mEXEC sp_executesql N'select FName as 客户名称 from t_Organization 
+            where fnumber like ''%A.%'' and fitemid<>''71086'' and fitemid<>''71087'' and F_102 = ''我司标准产'''[0m
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 7.3ms)
+
+
+Started POST "/fnumber/checkFnumber" for 127.0.0.1 at 2017-08-18 16:22:30 +0800
+Processing by FnumberController#checkFnumber as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"05.1.03.1273-6"}
+  [1m[35mCust_Fnumber Load (1.2ms)[0m  EXEC sp_executesql N'select ID from cust_fnumbers where fnumber = ''05.1.03.1273-6'''
+  Rendered text template (0.0ms)
+Completed 200 OK in 2ms (Views: 0.5ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/fnumber/fnumber" for 127.0.0.1 at 2017-08-18 16:22:30 +0800
+Processing by FnumberController#fnumber as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"05.1.03.1273-6"}
+  [1m[36mTUser Load (0.8ms)[0m  [1mEXEC sp_executesql N'SELECT TOP (1) [t_users].* FROM [t_users] WHERE [t_users].[name] = N''test'''[0m
+  [1m[35mCust_Performance_Char Load (19.2ms)[0m  EXEC sp_executesql N'select t1.f_102 AS 客户代码 ,t2.* 
+                from ( SELECT * from V_Fnumber where 物料代码 = ''05.1.03.1273-6'') t2
+                left join cust_performance_char t1 on t1.product_model_suffix = t2.f102'
+  [1m[36mCust_Performance_Char Load (12.6ms)[0m  [1mEXEC sp_executesql N'SELECT * 
+                from V_FnumberFMapName where 物料代码 = ''05.1.03.1273-6'' '[0m
+Completed 200 OK in 35ms (Views: 0.5ms | ActiveRecord: 32.7ms)
+
+
+Started POST "/fnumber/customerCode" for 127.0.0.1 at 2017-08-18 16:22:30 +0800
+Processing by FnumberController#customerCode as */*
+  Parameters: {"name"=>"test", "token"=>"$2a$10$0D7xube8GX0QwIvg/iAVD.gQ1RC1ihLogA.3gyol9NbXs9VT4bUBq", "sql"=>"HN-02"}
+  [1m[35m (5.4ms)[0m  EXEC sp_executesql N'select FName as 客户名称 from t_Organization 
+            where fnumber like ''%A.%'' and fitemid<>''71086'' and fitemid<>''71087'' and F_102 = ''HN-02'''
+Completed 200 OK in 6ms (Views: 0.3ms | ActiveRecord: 5.4ms)
