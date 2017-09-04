@@ -1,6 +1,6 @@
 class OrderController < ApplicationController
 	before_action :authentication, only:[:index,:edit,:fnumber,:ghdw,:ywy ]
-
+	#查询
 	def index
 		if power(T_K3_Auth, "t_order_auth")
 			starttime=params[:starttime]
@@ -45,6 +45,7 @@ class OrderController < ApplicationController
 		end
 	end
 
+	#上传
 	def upload
 		type = params[:type]
 		tmp = params[:file]
@@ -107,7 +108,8 @@ class OrderController < ApplicationController
 							if row[0]=="需方代表"
 								
 							else
-								zxhub =  Zxhub.where("model = ? and fnumber = ? ",row[row1.index("规格型号")],row[row1.index("物料代码")])
+								zxhub =  Zxhub.where("model = ? and fnumber = ? ",
+									row[row1.index("规格型号")],row[row1.index("物料代码")])
 								if zxhub[0]
 									case zxhub[0].address
 										when 'VMI'
@@ -176,7 +178,6 @@ class OrderController < ApplicationController
 									end
 								else
 								end
-
 								order.po_number = row[row1.index("采购凭证")].to_s.split('.')[0]#客户订单编号
 								order.po_line_num = row[row1.index("项目")].to_s.split('.')[0]#客户订单行号
 								order.supplier_item = row[row1.index("短文本")].split('/')[0]#对应型号
@@ -275,8 +276,8 @@ class OrderController < ApplicationController
 								supplier_item = row[row1.index("规格型号")]#型号
 								customer_item = "0"+row[row1.index("材料代码")].to_i.to_s#项目编码
 								unit_price = row[row1.index("合同单价")]#单价
-								order_e = Order.where("supplier_item = ? and customer_item = ? and unit_price = ? and order_type = ?",supplier_item,customer_item,unit_price, 'zxhub')
-								
+								order_e = Order.where("supplier_item = ? and customer_item = ? and unit_price = ? 
+									and order_type = ?",supplier_item,customer_item,unit_price, 'zxhub')
 								if order_e[0]
 									order_e[0].qty_request = order_e[0].qty_request + row[row1.index("实收数量")]
 									if row[row1.index("入库日期")].to_s > order_e[0].request_date.to_s
@@ -286,7 +287,8 @@ class OrderController < ApplicationController
 									order_e[0].save									
 								else
 									order = Order.new
-									zxhub =  Zxhub.where("model = ? and fnumber = ? ",supplier_item,customer_item)
+									zxhub =  Zxhub.where("model = ? and fnumber = ? ",
+										supplier_item,customer_item)
 									order.po_number = po_number
 									order.po_line_num = "1"
 									order.supplier_item = supplier_item
@@ -307,13 +309,11 @@ class OrderController < ApplicationController
 											# a.push(order)
 											order.save
 										when "B"
-											
 										end
 									else
 									end
 								end
 							else
-								
 							end
 						end
 					end
@@ -327,56 +327,66 @@ class OrderController < ApplicationController
 		end
 	end
 
+	#$('#create2')//其他客户生成按钮
 	def edit
 		if power(T_K3_Auth, "t_order_auth")
 			id = params[:id]
 			type = params[:type]
 			fnumber = params[:fnumber]
 			conn = ActiveRecord::Base.connection()
-			sql1 = "select a.fnumber,a.fname,a.fmodel,u.fname as funit,a.FUnitID,c.fname as fenlei,c.finterid as fenlei_id
+			#物料分类、单位、对应代码、产品代码、产品名称
+			sql1 = "select a.fnumber, a.fname, a.fmodel, u.fname as funit, 
+						a.FUnitID, c.fname as fenlei, c.finterid as fenlei_id
 					from t_ICItem a
 					left join t_MeasureUnit u on a.FUnitID=u.FMeasureUnitID 
 					left join t_SubMessage c on a.ftypeid = c.finterid 
 					where a.fnumber = '"
-			sql2 = "select fnumber,fname from t_Organization where fname like '"
 			@icitem = conn.select_all(sql1+fnumber+"'")
+			#订单信息
 			@order = Order.find(id)
+			#购货单位
+			sql2 = "select fnumber,fname from t_Organization where fname like '"
 			case type
-			when "hw"
-				sql2 = sql2 +"华为%' or fname like'海思%'"
-			when "fh"
-				sql2 = sql2 +"烽火%'"
-			when "zx"
-				sql2 = sql2 +"中兴%'"
-			when "njy"
-				sql2 = sql2 +"%诺基亚%'"
-			when "hs"
-				sql2 = sql2 +"华三%'"
+				when "hw"
+					sql2 = sql2 +"华为%' or fname like'海思%'"
+				when "fh"
+					sql2 = sql2 +"烽火%'"
+				when "zx"
+					sql2 = sql2 +"中兴%'"
+				when "njy"
+					sql2 = sql2 +"%诺基亚%'"
+				when "hs"
+					sql2 = sql2 +"华三%'"
 			end
-			case @order.business_mode
-			when "VCI-PO"
-				fbillno = fbillno("t_BOS270000001",9,"HGOAV","FText5")
-			when "VCI-VRN"
-				fbillno = fbillno("t_BOS270000001",9,"HGOAV","FText5")
-			when "VCI-CA"
-				fbillno = fbillno("SEOrder",8,"HGOA","FHeadSelfS0155")
-			when "Normal"
-				fbillno = fbillno('SEOrder',8,"HGOA","FHeadSelfS0155")
-			when "DUN"
-				fbillno = fbillno('SEOrder',8,"HGOA","FHeadSelfS0155")
-			end	
-
 			@ghhw = conn.select_all(sql2)
-			@a =conn.select_all(" select FItemID,FName from t_Department")#部门
-			@b = conn.select_all(" select FCurrencyID,FName from t_currency")#币别
-			# @c = conn.select_all(" select FItemID,FNumber,FName from t_emp")#业务员
-			@c = conn.select_all(" select FInterID,FName from t_SubMessage where ftypeid = 101")#销售方式
+			#订单流水编号获取
+			case @order.business_mode
+				when "VCI-PO"
+					fbillno = fbillno("t_BOS270000001",9,"HGOAV","FText5")
+				when "VCI-VRN"
+					fbillno = fbillno("t_BOS270000001",9,"HGOAV","FText5")
+				when "VCI-CA"
+					fbillno = fbillno("SEOrder",8,"HGOA","FHeadSelfS0155")
+				when "Normal"
+					fbillno = fbillno('SEOrder',8,"HGOA","FHeadSelfS0155")
+				when "DUN"
+					fbillno = fbillno('SEOrder',8,"HGOA","FHeadSelfS0155")
+			end	
+			#部门
+			@a =conn.select_all("select FItemID,FName from t_Department")
+			#币别
+			@b = conn.select_all("select FCurrencyID,FName from t_currency")
+			#业务员
+			#@c = conn.select_all("select FItemID,FNumber,FName from t_emp")
+			#销售方式
+			@c = conn.select_all("select FInterID,FName from t_SubMessage where ftypeid = 101")
 			render :json =>	{:data1 =>@icitem,:data2 =>@order,:data3 => @ghhw,:data4 =>fbillno,:data5 =>@a,:data6 =>@b,:data7 =>@c}
 		else
 			return nopower!
 		end
 	end
 
+	#K3代码获取
 	def fnumber
 		if power(T_K3_Auth, "t_order_auth")
 			type = params[:type]
@@ -409,20 +419,26 @@ class OrderController < ApplicationController
 		end
 	end
 
+	#购货单位
 	def ghdw
 		if power(T_K3_Auth, "t_order_auth")
 			ghdw = params[:ghdw]
-			conn = ActiveRecord::Base.connection()
-			sql = "select a.F_102,a.F_103,b.FName from t_Organization a 
-					left join t_item b on a.F_103 = b.fitemid
-					where a.fnumber ='"
-			@a = conn.select_all(sql+ghdw+"'")
-			render :json => @a
+			if ghdw&&(""!=ghdw)
+				conn = ActiveRecord::Base.connection()
+				sql = "select a.F_102,a.F_103,b.FName from t_Organization a 
+						left join t_item b on a.F_103 = b.fitemid
+						where a.fnumber ='"
+				@a = conn.select_all(sql+ghdw+"'")
+				render :json => @a
+			else
+				render :json => nil
+			end
 		else
 			return nopower!
 		end
 	end
 
+	#$('#save')//保存按钮
 	def create_1
 		conn = ActiveRecord::Base.connection()
 		fname = params[:ddlx]
@@ -569,10 +585,9 @@ class OrderController < ApplicationController
 			render :text => 'VMI订单'
 		else
 		end
-		
 	end
 
-	
+	#业务员
 	def ywy 
 		if power(T_K3_Auth, "t_order_auth")
 			conn = ActiveRecord::Base.connection()
@@ -583,6 +598,7 @@ class OrderController < ApplicationController
 		end
 	end
 
+	#$('#create')//大客户生成按钮
 	def edit_1
 		id = params[:id]#.split(' ')
 		type = params[:type]
@@ -595,8 +611,8 @@ class OrderController < ApplicationController
 					where a.fnumber = '"
 		sql2 = "select fnumber,fname from t_Organization where fname like '"
 		sql3 = "select b.fnumber,a.fprice from ICPrcPlyEntry a join t_icitem b on a.fitemid = b.fitemid 
-		where FChecked = 1 and (FBegDate <= convert(varchar(10),getdate(),120) and FEndDate >= convert(varchar(10),getdate(),120)) and b.fnumber = '"
-		
+					where FChecked = 1 and (FBegDate <= convert(varchar(10),getdate(),120) 
+					and FEndDate >= convert(varchar(10),getdate(),120)) and b.fnumber = '"
 		arr3 = Array.new() 
 		arr1 = Array.new() 
 		for i in 0..fnumber.length-1
@@ -609,39 +625,43 @@ class OrderController < ApplicationController
 		end
 		puts arr2[0].business_mode
 		case type
-		when "hw"
-			sql2 = sql2 +"华为%' or fname like'海思%'"
-		when "fh"
-			sql2 = sql2 +"烽火%'"
-		when "zx","zxhub"
-			sql2 = sql2 +"中兴%'"
-		when "njy"
-			sql2 = sql2 +"%NOKIA%'"
-		when "hs"
-			sql2 = sql2 +"%华三%'"
-		when "other"
-			sql2 = "select fnumber,fname from t_Organization "
+			when "hw"
+				sql2 = sql2 +"华为%' or fname like'海思%'"
+			when "fh"
+				sql2 = sql2 +"烽火%'"
+			when "zx","zxhub"
+				sql2 = sql2 +"中兴%'"
+			when "njy"
+				sql2 = sql2 +"%NOKIA%'"
+			when "hs"
+				sql2 = sql2 +"%华三%'"
+			when "other"
+				sql2 = "select fnumber,fname from t_Organization "
 		end
+
 		case params[:ghdw]
-		when "VMI补货","HUB补货"
-			fbillno = fbillno_1("t_BOS270000001",9,"HGOAV","FText5")
-		when "VMI结算","普通销售","现款销售","换货订单","HUB结算"
-			fbillno = fbillno_1('SEOrder',8,"HGOA","FHeadSelfS0155")
+			when "VMI补货","HUB补货"
+				fbillno = fbillno_1("t_BOS270000001",9,"HGOAV","FText5")
+			when "VMI结算","普通销售","现款销售","换货订单","HUB结算"
+				fbillno = fbillno_1('SEOrder',8,"HGOA","FHeadSelfS0155")
 		end	
 
 		@ghhw = conn.select_all(sql2)
-		@a =conn.select_all(" select FItemID,FName from t_Department")#部门
-		@b = conn.select_all(" select FCurrencyID,FName from t_currency")#币别
-		# @c = conn.select_all(" select FItemID,FNumber,FName from t_emp")#业务员
-		@c = conn.select_all(" select FInterID,FName from t_SubMessage where ftypeid = 101")#销售方式
-		render :json => {:data1 =>arr1,:data2 =>arr2,:data3 => @ghhw,:data4 =>fbillno,:data5 =>@a,:data6 =>@b,:data7 =>@c, :data8 =>arr3}
+		@a =conn.select_all("select FItemID,FName from t_Department")#部门
+		@b = conn.select_all("select FCurrencyID,FName from t_currency")#币别
+		# @c = conn.select_all("select FItemID,FNumber,FName from t_emp")#业务员
+		@c = conn.select_all("select FInterID,FName from t_SubMessage where ftypeid = 101")#销售方式
+		#购货单位(已选)
+		@d = Order.find_by_sql("select * from v_ghdw where wldm = '"+fnumber[0]+"'")
+		render :json => {:data1 =>arr1,:data2 =>arr2,:data3 =>@ghhw,:data4 =>fbillno,:data5 =>@a,:data6 =>@b,:data7 =>@c,:data8 =>arr3,:data9 =>@d}
 	end
 
+	#其它客户//生成订单编号
 	def fbillno_1(table,num,line,po_number)
 		conn = ActiveRecord::Base.connection()
 		time = Time.new.strftime("%Y%m")
 		date = time[2,time.length-1]
-		fbillno = conn.select_value("select  top 1 max(fbillno) as fbillno from " +table+ " where "+po_number+" ='"+params[:po_number]+"' group by len(fbillno) order by len(fbillno) desc" )
+		fbillno = conn.select_value("select top 1 max(fbillno) as fbillno from " +table+ " where "+po_number+" ='"+params[:po_number]+"' group by len(fbillno) order by len(fbillno) desc" )
 	    puts "-------------------"
 		puts fbillno
 		puts po_number
@@ -649,7 +669,6 @@ class OrderController < ApplicationController
 		num_1 = (num+4).to_s
 		if fbillno&&params[:po_number]!=''
 			if fbillno.include?'-'
-				# fbillno[fbillno.length-1] = (fbillno[fbillno.length-1].to_i+1).to_s
 				fbillno = fbillno.split('-')[0]+'-'+(fbillno.split('-')[1].to_i+1).to_s
 			else
 				fbillno = fbillno + '-1'
@@ -658,7 +677,8 @@ class OrderController < ApplicationController
 			puts fbillno
 			puts "带杠-------------------"
 		else
-			fbillno = conn.select_value("select max(fbillno) from " +table+ " where len(fbillno) = "+num_1+" and fbillno like '%"+line+date+"%'")
+			fbillno = conn.select_value("select max(fbillno) from " +table+ " where 
+				len(fbillno) = "+num_1+" and fbillno like '%"+line+date+"%'")
 			puts fbillno
 			if fbillno
 				a = fbillno[0,num]
@@ -674,11 +694,15 @@ class OrderController < ApplicationController
 		end
 		return fbillno
 	end
+
+	#大客户//生成订单编号
 	def fbillno(table,num,line,po_number)
 		conn = ActiveRecord::Base.connection()
 		time = Time.new.strftime("%Y%m")
 		date = time[2,time.length-1]
-		fbillno = conn.select_value("select  top 1 max(fbillno) as fbillno from " +table+ " where "+po_number+" ='"+@order.po_number+"' group by len(fbillno) order by len(fbillno) desc" )
+		fbillno = conn.select_value("select  top 1 max(fbillno) as fbillno from " +table+ " 
+					where "+po_number+" ='"+@order.po_number+"' 
+					group by len(fbillno) order by len(fbillno) desc" )
 		puts fbillno
 		if fbillno
 			if fbillno.include?'-'
@@ -689,7 +713,8 @@ class OrderController < ApplicationController
 			end
 			puts fbillno
 		else
-			fbillno = conn.select_value("select max(fbillno) from " +table+ " where len(fbillno) == 13 and fbillno like '%"+line+date+"%'")
+			fbillno = conn.select_value("select max(fbillno) from " +table+ " 
+				where len(fbillno) == 13 and fbillno like '%"+line+date+"%'")
 			puts fbillno
 			if fbillno
 				a = fbillno[0,num]
@@ -704,6 +729,7 @@ class OrderController < ApplicationController
 		return fbillno
 	end
 
+	#获取所有单位
 	def orther
 		conn = ActiveRecord::Base.connection()
 		sql2 = "select fnumber,fname from t_Organization"
@@ -711,13 +737,15 @@ class OrderController < ApplicationController
 		render :json => @ghhw
 	end
 
-	def ghdw_all #获取所有购货单位
+	#获取所有购货单位
+	def ghdw_all 
 		conn = ActiveRecord::Base.connection()
 		sql =  "select fnumber,fname from t_Organization where fnumber like '%A.%'"
 		@ghdw_all =  conn.select_all(sql)
 		render :json => @ghdw_all
 	end
 
+	#$('#other_save')//其它订单保存
 	def new
 		today = Time.new
 		time = today.strftime("%Y-%m-%d %H:%M:%S")
@@ -771,6 +799,7 @@ class OrderController < ApplicationController
 		render :text => '保存成功'
 	end
 
+	#function order_close()//关闭按钮
 	def close
 		id = params[:id]
 		order = Order.find(id)
@@ -786,6 +815,7 @@ class OrderController < ApplicationController
 		end
 	end
 
+	#function order_open()//反关闭按钮
 	def open
 		id = params[:id]
 		order = Order.find(id)
@@ -800,10 +830,4 @@ class OrderController < ApplicationController
 			render :text => '该订单未关闭'
 		end
 	end
-
 end
-
-
-
-
-
