@@ -63,3 +63,13 @@ Lte: #外部数据库
   password: 13554347618
   database: Lte
 
+LP: #外部数据库
+  adapter:  sqlserver
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+  host:     192.168.7.28
+  port:     1433
+  username: LP
+  password: 1p87180102
+  database: LP
